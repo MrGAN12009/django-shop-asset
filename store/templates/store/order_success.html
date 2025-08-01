@@ -1,0 +1,62 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Заказ оформлен - Интернет-магазин{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card text-center">
+            <div class="card-body py-5">
+                <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
+                <h2 class="card-title text-success">Заказ успешно оформлен!</h2>
+                <p class="card-text fs-5">Ваш заказ #{{ order.id }} принят в обработку.</p>
+                
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle me-2"></i>Информация о заказе</h5>
+                    <div class="row text-start">
+                        <div class="col-md-6">
+                            <p><strong>Номер заказа:</strong> #{{ order.id }}</p>
+                            <p><strong>Дата заказа:</strong> {{ order.created|date:"d.m.Y H:i" }}</p>
+                            <p><strong>Статус:</strong> 
+                                <span class="badge bg-warning">{{ order.get_status_display }}</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            {% if order.user %}
+                                <p><strong>Пользователь:</strong> {{ order.user.username }}</p>
+                                <p><strong>Телефон:</strong> {{ order.user.phone_number }}</p>
+                                {% if order.user.email %}
+                                    <p><strong>Email:</strong> {{ order.user.email }}</p>
+                                {% endif %}
+                            {% else %}
+                                <p><strong>Имя:</strong> {{ order.customer_name }}</p>
+                                <p><strong>Email:</strong> {{ order.customer_email }}</p>
+                                <p><strong>Телефон:</strong> {{ order.customer_phone }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <p><strong>Адрес доставки:</strong> {{ order.address }}</p>
+                    <p><strong>Общая сумма:</strong> <span class="h5 text-primary">{{ order.total_amount }} ₽</span></p>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'store:product_list' %}" class="btn btn-primary me-2">
+                        <i class="fas fa-shopping-bag me-2"></i>Продолжить покупки
+                    </a>
+                    {% if order.user %}
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-user me-2"></i>Мой профиль
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:register' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-user-plus me-2"></i>Создать аккаунт
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
